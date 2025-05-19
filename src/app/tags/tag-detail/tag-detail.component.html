@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tags"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Tag Details</ion-title>
+    <ion-buttons slot="end">
+      <ion-button [routerLink]="['/tags/edit', tagId]">
+        <ion-icon name="create"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card *ngIf="tag$ | async as tag">
+    <ion-card-header>
+      <ion-card-title>{{ tag.name }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-badge [style.background-color]="tag.color">{{ tag.color }}</ion-badge>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

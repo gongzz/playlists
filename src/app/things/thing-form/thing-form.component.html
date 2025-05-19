@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/things"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ isEdit ? 'Edit' : 'Add' }} Thing</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="thingForm" (ngSubmit)="saveThing()">
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating">Name</ion-label>
+        <ion-input formControlName="name" type="text" required></ion-input>
+      </ion-item>
+      <ion-item *ngIf="thingForm.get('name')?.invalid && thingForm.get('name')?.touched">
+        <ion-text color="danger">Name is required</ion-text>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Description</ion-label>
+        <ion-textarea formControlName="description" rows="4"></ion-textarea>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Container</ion-label>
+        <ion-select formControlName="container">
+          <ion-select-option [value]="''">None</ion-select-option>
+          <ion-select-option *ngFor="let container of containers$ | async" [value]="container.id">
+            {{ container.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <div class="ion-padding">
+      <ion-button expand="block" type="submit" [disabled]="thingForm.invalid">
+        {{ isEdit ? 'Update' : 'Create' }}
+      </ion-button>
+    </div>
+  </form>
+</ion-content>

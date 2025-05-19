@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from './common/services/auth.service';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -7,11 +10,19 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   public appPages = [
-    { title: 'Musica', url: '/folder/music', icon: 'musical-notes' },
-    { title: 'Artistas', url: '/folder/artists', icon: 'people' },
-    { title: 'Albumes', url: '/folder/albums', icon: 'albums' },
-    { title: 'Playlists', url: '/folder/playlists', icon: 'reorder-four' },
-    { title: 'Generos', url: '/folder/genres', icon: 'shapes' },
+    { title: 'Things', url: '/things', icon: 'cube' },
+    { title: 'Containers', url: '/containers', icon: 'folder' },
+    { title: 'Tags', url: '/tags', icon: 'pricetag' },
   ];
-  constructor() {}
+
+  constructor(private authService: AuthService, private router: Router) {}
+
+  async logout() {
+    try {
+      await this.authService.logout();
+      this.router.navigate(['/login']);
+    } catch (error) {
+      console.error('Logout error', error);
+    }
+  }
 }

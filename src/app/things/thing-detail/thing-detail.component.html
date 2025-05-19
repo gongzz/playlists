@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/things"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Thing Details</ion-title>
+    <ion-buttons slot="end">
+      <ion-button [routerLink]="['/things/edit', thingId]">
+        <ion-icon name="create"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card *ngIf="thing$ | async as thing">
+    <ion-card-header>
+      <ion-card-title>{{ thing.name }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>{{ thing.description }}</p>
+
+      <ion-item *ngIf="container$ | async as container">
+        <ion-label>
+          <h3>Container</h3>
+          <p>{{ container.name }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

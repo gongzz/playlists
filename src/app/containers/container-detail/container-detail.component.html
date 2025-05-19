@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/containers"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Container Details</ion-title>
+    <ion-buttons slot="end">
+      <ion-button [routerLink]="['/containers/edit', containerId]">
+        <ion-icon name="create"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card *ngIf="container$ | async as container">
+    <ion-card-header>
+      <ion-card-title>{{ container.name }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>{{ container.description }}</p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/containers"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ isEdit ? 'Edit' : 'Add' }} Container</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="containerForm" (ngSubmit)="saveContainer()">
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating">Name</ion-label>
+        <ion-input formControlName="name" type="text" required></ion-input>
+      </ion-item>
+      <ion-item *ngIf="containerForm.get('name')?.invalid && containerForm.get('name')?.touched">
+        <ion-text color="danger">Name is required</ion-text>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Description</ion-label>
+        <ion-textarea formControlName="description" rows="4"></ion-textarea>
+      </ion-item>
+    </ion-list>
+
+    <div class="ion-padding">
+      <ion-button expand="block" type="submit" [disabled]="containerForm.invalid">
+        {{ isEdit ? 'Update' : 'Create' }}
+      </ion-button>
+    </div>
+  </form>
+</ion-content>

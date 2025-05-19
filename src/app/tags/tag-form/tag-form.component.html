@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tags"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ isEdit ? 'Edit' : 'Add' }} Tag</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="tagForm" (ngSubmit)="saveTag()">
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating">Name</ion-label>
+        <ion-input formControlName="name" type="text" required></ion-input>
+      </ion-item>
+      <ion-item *ngIf="tagForm.get('name')?.invalid && tagForm.get('name')?.touched">
+        <ion-text color="danger">Name is required</ion-text>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Color</ion-label>
+        <ion-input formControlName="color" type="color"></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <div class="ion-padding">
+      <ion-button expand="block" type="submit" [disabled]="tagForm.invalid">
+        {{ isEdit ? 'Update' : 'Create' }}
+      </ion-button>
+    </div>
+  </form>
+</ion-content>
