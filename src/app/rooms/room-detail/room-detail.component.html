@@ -1,14 +1,14 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/tags"></ion-back-button>
+      <ion-back-button defaultHref="/rooms"></ion-back-button>
     </ion-buttons>
-    <ion-title>Tag Details</ion-title>
+    <ion-title>Room Details</ion-title>
     <ion-buttons slot="end">
-      <ion-button [routerLink]="['/tags/edit', tagId]">
+      <ion-button [routerLink]="['/rooms/edit', roomId]">
         <ion-icon name="create"></ion-icon>
       </ion-button>
-      <ion-button (click)="deleteTag()" color="danger">
+      <ion-button (click)="deleteRoom()" color="danger">
         <ion-icon name="trash"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -16,11 +16,12 @@
 </ion-header>
 
 <ion-content>
-  <ion-card *ngIf="tag$ | async as tag">
+  <ion-card *ngIf="room$ | async as room">
     <ion-card-header>
-      <ion-card-title>{{ tag.name }}</ion-card-title>
+      <ion-card-title>{{ room.name }}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
+      <p>{{ room.description }}</p>
     </ion-card-content>
   </ion-card>
 </ion-content>

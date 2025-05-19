@@ -25,11 +25,10 @@ const routes: Routes = [
     ReactiveFormsModule,
     IonicModule,
     RouterModule.forChild(routes),
-    LoginComponent,
-    RegisterComponent
   ],
   declarations: [
-
+    LoginComponent,
+    RegisterComponent
   ]
 })
 export class AuthModule { }

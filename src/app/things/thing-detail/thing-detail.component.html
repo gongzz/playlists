@@ -8,6 +8,9 @@
       <ion-button [routerLink]="['/things/edit', thingId]">
         <ion-icon name="create"></ion-icon>
       </ion-button>
+      <ion-button (click)="deleteThing()" color="danger">
+        <ion-icon name="trash"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -24,6 +27,22 @@
         <ion-label>
           <h3>Container</h3>
           <p>{{ container.name }}</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item *ngIf="room$ | async as room">
+        <ion-label>
+          <h3>Room</h3>
+          <p>{{ room.name }}</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item *ngIf="tagsList && tagsList.length > 0">
+        <ion-label>
+          <h3>Tags</h3>
+          <ion-chip *ngFor="let tag of tagsList">
+            <ion-label>{{ tag.name }}</ion-label>
+          </ion-chip>
         </ion-label>
       </ion-item>
     </ion-card-content>

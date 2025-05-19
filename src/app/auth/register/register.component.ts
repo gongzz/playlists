@@ -8,12 +8,13 @@ import {NgIf} from "@angular/common";
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss'],
-  imports: [
-    IonicModule,
-    ReactiveFormsModule,
-    NgIf
-  ]
+  // styleUrls: ['./register.component.scss'],
+  standalone: false,
+  // imports: [
+  //   IonicModule,
+  //   ReactiveFormsModule,
+  //   NgIf
+  // ]
 })
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;

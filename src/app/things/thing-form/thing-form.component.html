@@ -32,6 +32,25 @@
           </ion-select-option>
         </ion-select>
       </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Room</ion-label>
+        <ion-select formControlName="room">
+          <ion-select-option [value]="''">None</ion-select-option>
+          <ion-select-option *ngFor="let room of rooms$ | async" [value]="room.id">
+            {{ room.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Tags</ion-label>
+        <ion-select formControlName="tags" multiple="true">
+          <ion-select-option *ngFor="let tag of tags$ | async" [value]="tag.id">
+            {{ tag.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
     </ion-list>
 
     <div class="ion-padding">

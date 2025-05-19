@@ -9,7 +9,7 @@ import {RouterLink} from "@angular/router";
 @Component({
   selector: 'app-tags-list',
   templateUrl: './tags-list.component.html',
-  styleUrls: ['./tags-list.component.scss'],
+  // styleUrls: ['./tags-list.component.scss'],
   imports: [
     IonicModule,
     NgForOf,

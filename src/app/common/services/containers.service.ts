@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, addDoc, updateDoc, deleteDoc, doc, collectionData, docData } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, updateDoc, deleteDoc, doc, collectionData, docData, query, orderBy } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Container } from '../models/containers';
 
@@ -10,10 +10,11 @@ export class ContainersService {
 
   constructor(private firestore: Firestore) { }
 
-  // Get all containers
+  // Get all containers ordered by creation date descending
   getContainers(): Observable<Container[]> {
     const containersRef = collection(this.firestore, 'containers');
-    return collectionData(containersRef, { idField: 'id' }) as Observable<Container[]>;
+    const containersQuery = query(containersRef, orderBy('createdAt', 'desc'));
+    return collectionData(containersQuery, { idField: 'id' }) as Observable<Container[]>;
   }
 
   // Get a single container by ID
@@ -25,7 +26,11 @@ export class ContainersService {
   // Add a new container
   addContainer(container: Omit<Container, 'id'>): Promise<any> {
     const containersRef = collection(this.firestore, 'containers');
-    return addDoc(containersRef, container);
+    const containerWithTimestamp = {
+      ...container,
+      createdAt: new Date().toISOString()
+    };
+    return addDoc(containersRef, containerWithTimestamp);
   }
 
   // Update an existing container

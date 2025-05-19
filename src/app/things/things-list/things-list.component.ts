@@ -9,7 +9,7 @@ import {AsyncPipe, NgForOf} from "@angular/common";
 @Component({
   selector: 'app-things-list',
   templateUrl: './things-list.component.html',
-  styleUrls: ['./things-list.component.scss'],
+  // styleUrls: ['./things-list.component.scss'],
   imports: [
     IonicModule,
     RouterLink,

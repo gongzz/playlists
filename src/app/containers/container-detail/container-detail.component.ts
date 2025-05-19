@@ -9,7 +9,7 @@ import {AsyncPipe, NgIf} from "@angular/common";
 @Component({
   selector: 'app-container-detail',
   templateUrl: './container-detail.component.html',
-  styleUrls: ['./container-detail.component.scss'],
+  // styleUrls: ['./container-detail.component.scss'],
   imports: [
     IonicModule,
     RouterLink,

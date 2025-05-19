@@ -3,9 +3,9 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Tags</ion-title>
+    <ion-title>Rooms</ion-title>
     <ion-buttons slot="end">
-      <ion-button routerLink="/tags/new">
+      <ion-button routerLink="/rooms/new">
         <ion-icon name="add"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -14,17 +14,18 @@
 
 <ion-content>
   <ion-list>
-    <ion-item-sliding *ngFor="let tag of tags$ | async">
-      <ion-item [routerLink]="['/tags', tag.id]">
+    <ion-item-sliding *ngFor="let room of rooms$ | async">
+      <ion-item [routerLink]="['/rooms', room.id]">
         <ion-label>
-          <h2>{{ tag.name }}</h2>
+          <h2>{{ room.name }}</h2>
+          <p>{{ room.description }}</p>
         </ion-label>
       </ion-item>
       <ion-item-options side="end">
-        <ion-item-option [routerLink]="['/tags/edit', tag.id]" color="primary">
+        <ion-item-option [routerLink]="['/rooms/edit', room.id]" color="primary">
           <ion-icon slot="icon-only" name="create"></ion-icon>
         </ion-item-option>
-        <ion-item-option (click)="deleteTag(tag.id)" color="danger">
+        <ion-item-option (click)="deleteRoom(room.id)" color="danger">
           <ion-icon slot="icon-only" name="trash"></ion-icon>
         </ion-item-option>
       </ion-item-options>

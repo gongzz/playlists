@@ -9,7 +9,7 @@ import {RouterLink} from "@angular/router";
 @Component({
   selector: 'app-containers-list',
   templateUrl: './containers-list.component.html',
-  styleUrls: ['./containers-list.component.scss'],
+  // styleUrls: ['./containers-list.component.scss'],
   imports: [
     IonicModule,
     NgForOf,

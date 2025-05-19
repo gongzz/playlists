@@ -5,13 +5,8 @@ import { AuthGuard } from './common/guards/auth.guard';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'auth/login',
     pathMatch: 'full'
-  },
-  {
-    path: 'folder/:id',
-    loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule),
-    canActivate: [AuthGuard]
   },
   {
     path: 'things',
@@ -29,7 +24,12 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: '',
+    path: 'rooms',
+    loadChildren: () => import('./rooms/rooms.module').then( m => m.RoomsModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'auth',
     loadChildren: () => import('./auth/auth.module').then( m => m.AuthModule)
   }
 ];

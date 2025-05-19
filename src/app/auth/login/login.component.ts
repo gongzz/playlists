@@ -8,12 +8,13 @@ import {NgIf} from "@angular/common";
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
-  imports: [
-    IonicModule,
-    ReactiveFormsModule,
-    NgIf
-  ]
+  // styleUrls: ['./login.component.scss'],
+  standalone: false,
+  // imports: [
+  //   IonicModule,
+  //   ReactiveFormsModule,
+  //   NgIf
+  // ]
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
@@ -47,7 +48,7 @@ export class LoginComponent implements OnInit {
 
     try {
       await this.authService.login(email, password);
-      this.router.navigate(['/folder/inbox']);
+      this.router.navigate(['/things']);
     } catch (error) {
       console.error('Login error', error);
       this.presentAlert('Login Failed', 'Invalid email or password. Please try again.');

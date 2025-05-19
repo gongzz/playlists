@@ -4,15 +4,19 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {IonicModule, LoadingController, ToastController} from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { Container } from '../../common/models/containers';
+import { Room } from '../../common/models/rooms';
+import { Tag } from '../../common/models/tags';
 import { Thing } from '../../common/models/things';
 import { ContainersService } from '../../common/services/containers.service';
+import { RoomsService } from '../../common/services/rooms.service';
+import { TagsService } from '../../common/services/tags.service';
 import { ThingsService } from '../../common/services/things.service';
 import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-thing-form',
   templateUrl: './thing-form.component.html',
-  styleUrls: ['./thing-form.component.scss'],
+  // styleUrls: ['./thing-form.component.scss'],
   imports: [
     IonicModule,
     ReactiveFormsModule,
@@ -26,11 +30,15 @@ export class ThingFormComponent implements OnInit {
   thingId: string | null = null;
   isEdit = false;
   containers$: Observable<Container[]>;
+  rooms$!: Observable<Room[]>;
+  tags$!: Observable<Tag[]>;
 
   constructor(
     private fb: FormBuilder,
     private thingsService: ThingsService,
     private containersService: ContainersService,
+    private roomsService: RoomsService,
+    private tagsService: TagsService,
     private route: ActivatedRoute,
     private router: Router,
     private loadingController: LoadingController,
@@ -40,9 +48,13 @@ export class ThingFormComponent implements OnInit {
       name: ['', Validators.required],
       description: [''],
       container: [''],
+      room: [''],
+      tags: [[]]
     });
 
     this.containers$ = this.containersService.getContainers();
+    this.rooms$ = this.roomsService.getRooms();
+    this.tags$ = this.tagsService.getTags();
   }
 
   ngOnInit() {
@@ -66,6 +78,8 @@ export class ThingFormComponent implements OnInit {
           name: thing.name,
           description: thing.description,
           container: thing.container,
+          room: thing.room || '',
+          tags: thing.tags || []
         });
         loading.dismiss();
       },

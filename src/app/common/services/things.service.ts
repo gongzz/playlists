@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, addDoc, updateDoc, deleteDoc, doc, collectionData, docData } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, updateDoc, deleteDoc, doc, collectionData, docData, query, orderBy } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Thing } from '../models/things';
@@ -11,10 +11,11 @@ export class ThingsService {
 
   constructor(private firestore: Firestore) { }
 
-  // Get all things
+  // Get all things ordered by creation date descending
   getThings(): Observable<Thing[]> {
     const thingsRef = collection(this.firestore, 'things');
-    return collectionData(thingsRef, { idField: 'id' }) as Observable<Thing[]>;
+    const thingsQuery = query(thingsRef, orderBy('createdAt', 'desc'));
+    return collectionData(thingsQuery, { idField: 'id' }) as Observable<Thing[]>;
   }
 
   // Get a single thing by ID
@@ -26,17 +27,33 @@ export class ThingsService {
   // Add a new thing
   addThing(thing: Omit<Thing, 'id'>): Promise<any> {
     const thingsRef = collection(this.firestore, 'things');
-    return addDoc(thingsRef, thing);
+    const thingWithTimestamp = {
+      ...thing,
+      createdAt: new Date().toISOString()
+    };
+    return addDoc(thingsRef, thingWithTimestamp);
   }
 
   // Update an existing thing
   updateThing(thing: Thing): Promise<void> {
     const thingDocRef = doc(this.firestore, `things/${thing.id}`);
-    return updateDoc(thingDocRef, {
+    const updateData: any = {
       name: thing.name,
       description: thing.description,
       container: thing.container
-    });
+    };
+
+    // Add room if it exists
+    if (thing.room !== undefined) {
+      updateData.room = thing.room;
+    }
+
+    // Add tags if they exist
+    if (thing.tags !== undefined) {
+      updateData.tags = thing.tags;
+    }
+
+    return updateDoc(thingDocRef, updateData);
   }
 
   // Delete a thing

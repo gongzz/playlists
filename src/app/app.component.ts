@@ -13,6 +13,7 @@ export class AppComponent {
     { title: 'Things', url: '/things', icon: 'cube' },
     { title: 'Containers', url: '/containers', icon: 'folder' },
     { title: 'Tags', url: '/tags', icon: 'pricetag' },
+    { title: 'Rooms', url: '/rooms', icon: 'home' },
   ];
 
   constructor(private authService: AuthService, private router: Router) {}
@@ -20,7 +21,7 @@ export class AppComponent {
   async logout() {
     try {
       await this.authService.logout();
-      this.router.navigate(['/login']);
+      this.router.navigate(['/auth/login']);
     } catch (error) {
       console.error('Logout error', error);
     }

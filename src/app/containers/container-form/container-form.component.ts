@@ -9,7 +9,7 @@ import {NgIf} from "@angular/common";
 @Component({
   selector: 'app-container-form',
   templateUrl: './container-form.component.html',
-  styleUrls: ['./container-form.component.scss'],
+  // styleUrls: ['./container-form.component.scss'],
   imports: [
     IonicModule,
     ReactiveFormsModule,

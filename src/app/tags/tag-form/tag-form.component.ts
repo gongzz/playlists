@@ -9,7 +9,7 @@ import {NgIf} from "@angular/common";
 @Component({
   selector: 'app-tag-form',
   templateUrl: './tag-form.component.html',
-  styleUrls: ['./tag-form.component.scss'],
+  // styleUrls: ['./tag-form.component.scss'],
   imports: [
     IonicModule,
     ReactiveFormsModule,
@@ -31,7 +31,6 @@ export class TagFormComponent implements OnInit {
   ) {
     this.tagForm = this.fb.group({
       name: ['', Validators.required],
-      color: ['#3880ff'],
     });
   }
 
@@ -54,7 +53,6 @@ export class TagFormComponent implements OnInit {
       (tag) => {
         this.tagForm.patchValue({
           name: tag.name,
-          color: tag.color,
         });
         loading.dismiss();
       },
