@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
-import {AlertController, IonicModule, LoadingController} from '@ionic/angular';
+import {AlertController, IonicModule, LoadingController, ToastController} from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { Container } from '../../common/models/containers';
@@ -41,7 +41,8 @@ export class ThingDetailComponent implements OnInit {
     private roomsService: RoomsService,
     private tagsService: TagsService,
     private loadingController: LoadingController,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private toastController: ToastController
   ) {
     this.thingId = this.route.snapshot.paramMap.get('id') as string;
     this.thing$ = this.thingsService.getThing(this.thingId);
@@ -59,8 +60,12 @@ export class ThingDetailComponent implements OnInit {
         {
           text: 'Delete',
           handler: async () => {
-            await this.thingsService.deleteThing(this.thingId);
-            this.router.navigate(['/things']);
+            try {
+              await this.thingsService.deleteThing(this.thingId);
+              this.router.navigate(['/things']);
+            } catch (error) {
+              console.error('Error deleting thing:', error);
+            }
           },
         },
       ],
@@ -109,7 +114,20 @@ export class ThingDetailComponent implements OnInit {
       (error) => {
         console.error('Error loading thing', error);
         loading.dismiss();
+        // Show error message and redirect to list view
+        // this.presentErrorToast('Thing not found or you do not have permission to view it');
+        this.router.navigate(['/things']);
       }
     );
+  }
+
+  async presentErrorToast(message: string) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 3000,
+      position: 'bottom',
+      color: 'danger'
+    });
+    toast.present();
   }
 }

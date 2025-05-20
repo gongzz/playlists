@@ -1,14 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, user } from '@angular/fire/auth';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  user$ = user(this.auth);
+  private userObservable$ = user(this.auth);
+  user$ = new BehaviorSubject<any>(null);
 
-  constructor(private auth: Auth) { }
+  constructor(private auth: Auth) {
+    this.userObservable$.subscribe(user => {
+      this.user$.next(user);
+    });
+  }
 
   // Register a new user
   async register(email: string, password: string): Promise<any> {

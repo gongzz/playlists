@@ -40,8 +40,14 @@ export class TagsListComponent implements OnInit {
         },
         {
           text: 'Delete',
-          handler: () => {
-            this.tagsService.deleteTag(id);
+          handler: async () => {
+            try {
+              await this.tagsService.deleteTag(id);
+              // Refresh the tags list
+              this.tags$ = this.tagsService.getTags();
+            } catch (error) {
+              console.error('Error deleting tag:', error);
+            }
           },
         },
       ],

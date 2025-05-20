@@ -39,8 +39,14 @@ export class RoomsListComponent implements OnInit {
         },
         {
           text: 'Delete',
-          handler: () => {
-            this.roomsService.deleteRoom(id);
+          handler: async () => {
+            try {
+              await this.roomsService.deleteRoom(id);
+              // Refresh the rooms list
+              this.rooms$ = this.roomsService.getRooms();
+            } catch (error) {
+              console.error('Error deleting room:', error);
+            }
           },
         },
       ],

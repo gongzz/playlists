@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
-import {AlertController, IonicModule, LoadingController} from '@ionic/angular';
+import {AlertController, IonicModule, LoadingController, ToastController} from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { Tag } from '../../common/models/tags';
 import { TagsService } from '../../common/services/tags.service';
@@ -26,7 +26,8 @@ export class TagDetailComponent implements OnInit {
     private router: Router,
     private tagsService: TagsService,
     private loadingController: LoadingController,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private toastController: ToastController
   ) {
     this.tagId = this.route.snapshot.paramMap.get('id') as string;
     this.tag$ = this.tagsService.getTag(this.tagId);
@@ -44,8 +45,12 @@ export class TagDetailComponent implements OnInit {
         {
           text: 'Delete',
           handler: async () => {
-            await this.tagsService.deleteTag(this.tagId);
-            this.router.navigate(['/tags']);
+            try {
+              await this.tagsService.deleteTag(this.tagId);
+              this.router.navigate(['/tags']);
+            } catch (error) {
+              console.error('Error deleting tag:', error);
+            }
           },
         },
       ],
@@ -73,7 +78,20 @@ export class TagDetailComponent implements OnInit {
       (error) => {
         console.error('Error loading tag', error);
         loading.dismiss();
+        // Show error message and redirect to list view
+        // this.presentErrorToast('Tag not found or you do not have permission to view it');
+        this.router.navigate(['/tags']);
       }
     );
+  }
+
+  async presentErrorToast(message: string) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 3000,
+      position: 'bottom',
+      color: 'danger'
+    });
+    toast.present();
   }
 }

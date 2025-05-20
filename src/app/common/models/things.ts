@@ -5,4 +5,5 @@ export interface Thing {
   container: string; // Reference to a related container or grouping
   room?: string; // Reference to a related room
   tags?: string[]; // Array of tag IDs associated with this thing
+  userId: string;
 }

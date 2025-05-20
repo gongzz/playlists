@@ -40,8 +40,14 @@ export class ContainersListComponent implements OnInit {
         },
         {
           text: 'Delete',
-          handler: () => {
-            this.containersService.deleteContainer(id);
+          handler: async () => {
+            try {
+              await this.containersService.deleteContainer(id);
+              // Refresh the containers list
+              this.containers$ = this.containersService.getContainers();
+            } catch (error) {
+              console.error('Error deleting container:', error);
+            }
           },
         },
       ],

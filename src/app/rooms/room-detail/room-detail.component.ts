@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { AlertController, IonicModule, LoadingController } from '@ionic/angular';
+import { AlertController, IonicModule, LoadingController, ToastController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { Room } from '../../common/models/rooms';
 import { RoomsService } from '../../common/services/rooms.service';
@@ -25,7 +25,8 @@ export class RoomDetailComponent implements OnInit {
     private router: Router,
     private roomsService: RoomsService,
     private loadingController: LoadingController,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private toastController: ToastController
   ) {
     this.roomId = this.route.snapshot.paramMap.get('id') as string;
     this.room$ = this.roomsService.getRoom(this.roomId);
@@ -43,8 +44,12 @@ export class RoomDetailComponent implements OnInit {
         {
           text: 'Delete',
           handler: async () => {
-            await this.roomsService.deleteRoom(this.roomId);
-            this.router.navigate(['/rooms']);
+            try {
+              await this.roomsService.deleteRoom(this.roomId);
+              this.router.navigate(['/rooms']);
+            } catch (error) {
+              console.error('Error deleting room:', error);
+            }
           },
         },
       ],
@@ -72,7 +77,20 @@ export class RoomDetailComponent implements OnInit {
       (error) => {
         console.error('Error loading room', error);
         loading.dismiss();
+        // Show error message and redirect to list view
+        // this.presentErrorToast('Room not found or you do not have permission to view it');
+        this.router.navigate(['/rooms']);
       }
     );
+  }
+
+  async presentErrorToast(message: string) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 3000,
+      position: 'bottom',
+      color: 'danger'
+    });
+    toast.present();
   }
 }

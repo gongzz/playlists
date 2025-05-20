@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, RouterLink} from '@angular/router';
-import {IonicModule, LoadingController} from '@ionic/angular';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {IonicModule, LoadingController, ToastController} from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { Container } from '../../common/models/containers';
 import { ContainersService } from '../../common/services/containers.service';
@@ -23,8 +23,10 @@ export class ContainerDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private containersService: ContainersService,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    private toastController: ToastController
   ) {
     this.containerId = this.route.snapshot.paramMap.get('id') as string;
     this.container$ = this.containersService.getContainer(this.containerId);
@@ -49,7 +51,20 @@ export class ContainerDetailComponent implements OnInit {
       (error) => {
         console.error('Error loading container', error);
         loading.dismiss();
+        // Show error message and redirect to list view
+        // this.presentErrorToast('Container not found or you do not have permission to view it');
+        this.router.navigate(['/containers']);
       }
     );
+  }
+
+  async presentErrorToast(message: string) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 3000,
+      position: 'bottom',
+      color: 'danger'
+    });
+    toast.present();
   }
 }

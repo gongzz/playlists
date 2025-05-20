@@ -40,8 +40,14 @@ export class ThingsListComponent implements OnInit {
         },
         {
           text: 'Delete',
-          handler: () => {
-            this.thingsService.deleteThing(id);
+          handler: async () => {
+            try {
+              await this.thingsService.deleteThing(id);
+              // Refresh the things list
+              this.things$ = this.thingsService.getThings();
+            } catch (error) {
+              console.error('Error deleting thing:', error);
+            }
           },
         },
       ],

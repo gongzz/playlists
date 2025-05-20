@@ -32,6 +32,7 @@ export class ThingFormComponent implements OnInit {
   containers$: Observable<Container[]>;
   rooms$!: Observable<Room[]>;
   tags$!: Observable<Tag[]>;
+  private userId: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -81,6 +82,8 @@ export class ThingFormComponent implements OnInit {
           room: thing.room || '',
           tags: thing.tags || []
         });
+        // Store the userId for later use when updating
+        this.userId = thing.userId;
         loading.dismiss();
       },
       (error) => {
@@ -105,9 +108,13 @@ export class ThingFormComponent implements OnInit {
 
     try {
       if (this.isEdit && this.thingId) {
+        if (!this.userId) {
+          throw new Error('User ID is missing');
+        }
         await this.thingsService.updateThing({
           id: this.thingId,
           ...thingData,
+          userId: this.userId
         });
         this.presentToast('Thing updated successfully');
       } else {
