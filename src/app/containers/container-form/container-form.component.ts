@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import {IonicModule, LoadingController, ToastController} from '@ionic/angular';
+import {AlertController, IonicModule, LoadingController, ToastController} from '@ionic/angular';
 import { Container } from '../../common/models/containers';
 import { ContainersService } from '../../common/services/containers.service';
 import {NgIf} from "@angular/common";
@@ -27,7 +27,8 @@ export class ContainerFormComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private loadingController: LoadingController,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private alertController: AlertController
   ) {
     this.containerForm = this.fb.group({
       name: ['', Validators.required],
@@ -104,5 +105,44 @@ export class ContainerFormComponent implements OnInit {
       duration: 2000,
     });
     toast.present();
+  }
+
+  async deleteContainer() {
+    if (!this.containerId) {
+      return;
+    }
+
+    const alert = await this.alertController.create({
+      header: 'Confirm Delete',
+      message: 'Are you sure you want to delete this container?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'Delete',
+          handler: async () => {
+            const loading = await this.loadingController.create({
+              message: 'Deleting container...',
+            });
+            await loading.present();
+
+            try {
+              await this.containersService.deleteContainer(this.containerId as string);
+              this.presentToast('Container deleted successfully');
+              this.router.navigate(['/containers']);
+            } catch (error) {
+              console.error('Error deleting container', error);
+              this.presentToast('Error deleting container');
+            } finally {
+              loading.dismiss();
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 }
